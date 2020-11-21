@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+<header th:insert="blocks/header:: header"></header>
+<header th:insert="blocks/headerForAdmin:: headerForAdmin"></header>
+<h1>Users</h1>
+<table th:each="users: ${User}">
+    <td th:text="${users.getId()}"></td>
+    <td th:text="${users.getUsername()}"></td>
+    <td th:text="${users.getPassword()}"></td>
+    <td th:text="${users.getRoles()}"></td>
+</table>
+<div th:insert="blocks/footer::footer"></div>
+</body>
+</html>
