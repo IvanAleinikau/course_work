@@ -11,5 +11,9 @@ public class HomeController {
         return "hello";
     }
 
+    @GetMapping(value = "/error")
+    public String errorPage(){
+        return "redirect:car_rent";
+    }
 
 }

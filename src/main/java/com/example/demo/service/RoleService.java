@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class RoleService {
 
-    @Autowired
+   /* @Autowired
     private final RoleDao roleDao;
 
     public RoleService(RoleDao roleDao) {
@@ -38,5 +38,5 @@ public class RoleService {
 
     public void update(Role role,Integer roleId){
         roleDao.save(role);
-    }
+    }*/
 }
