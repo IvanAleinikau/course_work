@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <link rel="stylesheet" href="../static/css/bootstrap.css"
           th:href="@{/css/bootstrap.css}">
     <link rel="stylesheet" href="../static/css/style.css"
@@ -11,7 +11,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <title>Car rent</title>
+    <title>Users</title>
     <style type="text/css">
         #footer {
             position: fixed; /* Фиксированное положение */
@@ -19,11 +19,14 @@
             padding: 10px; /* Поля вокруг текста */
             width: 100%; /* Ширина слоя */
         }
+
+        #right{
+            align: right;
+        }
     </style>
 
 </head>
 <body>
-
 <header>
     <nav class="navbar navbar-dark bg-dark navbar-expand-sm text-light p-1">
         <div class="container-fluid">
@@ -31,19 +34,19 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a href="main.html" th:href="@{/main}" class="navbar-brand bi bi-app">news</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse  navbar-collapse row" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li  class="nav-item">
-                        <a class="nav-link active" href="car_rent.html" th:href="@{/car_rent}">Car rent</a>
+                    <li class="nav-item">
+                        <a class="nav-link " href="car_rent.html" th:href="@{/car_rent}">Car rent</a>
                     </li>
-                    <li  class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item">
                         <a class="nav-link" href="cars.html" th:href="@{/cars}">Cars</a>
                     </li>
-                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item">
                         <a class="nav-link" href="active_rentals.html" th:href="@{/active_rentals}">Active rentals</a>
                     </li>
-                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                        <a class="nav-link" href="users.html" th:href="@{/users}">Users</a>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="users.html" th:href="@{/users}">Users</a>
                     </li>
                     <li class="nav-item" style="position: absolute; right: 0;">
                         <a class="nav-link bi bi-person" href="personal_account.html" th:href="@{|/personal_account/${#httpServletRequest.remoteUser}|}">Profile</a>
@@ -52,15 +55,9 @@
             </div>
         </div>
     </nav>
-    <nav id="main-header"
-         class="py-1 mb-3 navbar navbar-light bg-light text-dark">
-        <div class="container-fluid">
-            <span class="navbar-brand text-uppercase">Available cars for rent</span>
-        </div>
-    </nav>
 </header>
 
-<section id="carRent">
+<section id="allCars">
     <div class="container-fluid">
         <div class="row">
             <div class="col">
@@ -68,43 +65,42 @@
                     <table class="table table-striped">
                         <thead class="table-dark">
                         <tr>
-                            <th>Car model</th>
-                            <th>Year of issue</th>
-                            <th>Car color</th>
-                            <th>Price per day</th>
+                            <th>№ User</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Role</th>
                             <th></th>
                         </tr>
-                        </thead>
                         <tbody>
-                        <tr th:each="car : ${cars}">
-                            <td th:text="${car.carModel}"/>
-                            <td th:text="${car.yearOfIssue}"/>
-                            <td th:text="${car.carColor}"/>
-                            <td th:text="${car.pricePerDay}+'$'"/>
-                            <td>
-                                <a href="order.html"
-                                   th:href="@{|/car_rent/${car.carId}/order|}"
-                                   class="btn-sm btn-outline-secondary"
-                                   title="Rent car"
-                                   data-toggle="tooltip"
-                                   data-placement="top">
-                                    <i class="bi-cart"></i> <span
-                                        class="d-none d-md-inline">Rent</span></a>
+                        <tr th:each="user : ${list}">
+                            <td th:text="${user.userId}"/>
+                            <td th:text="${user.firstName}"/>
+                            <td th:text="${user.lastName}"/>
+                            <td th:text="${user.username}"/>
+                            <td th:text="${user.password}"/>
+                            <td th:text="${user.roles}"/>
+                            <td class="text-right">
                             </td>
                         </tr>
                         </tbody>
+                        </thead>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
 <footer>
     <div id="footer">
         <hr/>
         <p class="text-center"> &copy;Created by Ivan Aleinikau 2021</p>
     </div>
 </footer>
+
 <script src="../resources/static/js/bootstrap.bundle.min.js"
         th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>

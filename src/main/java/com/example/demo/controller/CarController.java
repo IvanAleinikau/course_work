@@ -33,12 +33,6 @@ public class CarController {
         return "redirect:/cars";
     }
 
-    @DeleteMapping(value = "/delete")
-    public String deleteCar(@PathVariable  Integer carId){
-        carService.delete(carId);
-        return "redirect:/cars";
-    }
-
     @GetMapping(value = "/cars/{id}/delete")
     public String deleteCarGet(@PathVariable(value = "id") Integer carId , Model model) {
         Optional<Car> car = Optional.ofNullable(carService.findById(carId));

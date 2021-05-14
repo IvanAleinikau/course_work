@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,7 +29,7 @@
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a href="hello.html" th:href="@{/}" class="navbar-brand bi bi-app"></a>
+            <a href="main.html" th:href="@{/main}" class="navbar-brand bi bi-app">news</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <ul class="navbar-nav">
@@ -41,11 +42,11 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="active_rentals.html" th:href="@{/active_rentals}">Active rentals</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{/}">Rental archive</a>
+                        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                            <a class="nav-link" href="users.html" th:href="@{/users}">Users</a>
                         </li>
                         <li class="nav-item" style="position: absolute; right: 0;">
-                            <a class="nav-link bi bi-person" href="personal_account.html" th:href="@{/personal_account}">Profile</a>
+                            <a class="nav-link bi bi-person active" href="personal_account.html" th:href="@{|/personal_account/${#httpServletRequest.remoteUser}|}">Profile</a>
                         </li>
                     </ul>
                 </ul>
@@ -65,45 +66,30 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <table class="table table-striped">
-                        <thead class="table-dark">
-                        <tr>
-                            <th>Car model</th>
-                            <th>Year of issue</th>
-                            <th>Car color</th>
-                            <th>Price per day</th>
-                            <th>Rental's name</th>
-                            <th>Lease date</th>
-                            <th>Lease term</th>
-                            <th>Return date</th>
-                            <th></th>
-                        </tr>
-                        <tbody>
-                        <tr>
-                            <td>Ford</td>
-                            <td>2014</td>
-                            <td>Black</td>
-                            <td>18$</td>
-                            <td>Ivan Ivanov</td>
-                            <td>20.01.2021</td>
-                            <td>8</td>
-                            <td>null</td>
-                            <td>
-                                <a href="#"
-                                   class="btn-sm btn-outline-secondary"
-                                   title="Edit car">
-                                    <i class="bi bi-cart-check"></i><span class="d-none d-md-inline">&nbsp;Confirm</span>
-                                </a>
-                                <a href="#"
-                                   class="btn-sm btn-outline-secondary"
-                                   title="Edit car">
-                                    <i class="bi bi-cart-x"></i><span class="d-none d-md-inline">&nbsp;Refuse</span>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                        </thead>
-                    </table>
+                        <table class="table table-striped" >
+                            <thead class="table-dark">
+                            <tr>
+                                <th>№ Order</th>
+                                <th>№ Car</th>
+                                <th>Date</th>
+                                <th>Email</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <form method="post" th:each="order: ${listOrder}" th:action="@{|/order/${order.carOrderId}|}">
+                            <tr>
+                                <td th:text="${order.carOrderId}" />
+                                <td th:text="${order.carId}" />
+                                <td th:text="${order.date}" />
+                                <td th:text="${order.username}" />
+                                <td>
+                                    <input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" value="Cancel"/>
+                                </td>
+                            </tr>
+                            </form>
+                            </tbody>
+                        </table>
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a href="hello.html" th:href="@{/}" class="navbar-brand bi bi-app"></a>
+            <a href="main.html" th:href="@{/main}" class="navbar-brand bi bi-app">news</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <ul class="navbar-nav">
@@ -41,9 +41,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="active_rentals.html" th:href="@{/active_rentals}">Active rentals</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" th:href="@{/}">Rental archive</a>
                         </li>
                         <li class="nav-item" style="position: absolute; right: 0;">
                             <a class="nav-link bi bi-person" href="personal_account.html" th:href="@{/personal_account}">Profile</a>
@@ -76,7 +73,7 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <form method="post">
+                    <form th:each="el : ${car}" th:action="@{|/cars/${el.carId}/delete|}" method="post">
                         <table class="table table-striped">
                             <thead class="table-dark">
                             <tr>
@@ -88,7 +85,7 @@
                                 <th></th>
                             </tr>
                             <tbody>
-                            <tr th:each="el : ${car}">
+                            <tr >
                                 <td th:text="${el.carId}"/>
                                 <td th:text="${el.carModel}"/>
                                 <td th:text="${el.yearOfIssue}"/>

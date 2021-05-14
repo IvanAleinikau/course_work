@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 
     <title>Personal account</title>
@@ -27,23 +27,23 @@
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a href="hello.html" th:href="@{/}" class="navbar-brand bi bi-app"></a>
+            <a href="main.html" th:href="@{/main}" class="navbar-brand bi bi-app">news</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                    <li class="nav-item" >
                         <a class="nav-link" href="car_rent.html" th:href="@{/car_rent}">Car rent</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                         <a class="nav-link" href="cars.html" th:href="@{/cars}">Cars</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                         <a class="nav-link" href="active_rentals.html" th:href="@{/active_rentals}">Active rentals</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{/}">Rental archive</a>
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" href="users.html" th:href="@{/users}">Users</a>
                     </li>
                     <li class="nav-item" style="position: absolute; right: 0;">
-                        <a class="nav-link bi bi-person active" href="personal_account.html" th:href="@{/personal_account}">Profile</a>
+                        <a class="nav-link bi bi-person active" href="personal_account.html" th:href="@{|/personal_account/${#httpServletRequest.remoteUser}|}">Profile</a>
                     </li>
                 </ul>
             </div>
@@ -52,7 +52,7 @@
     <nav id="main-header"
          class="py-1 mb-3 navbar navbar-light bg-light text-dark">
         <div class="container-fluid">
-            <span class="navbar-brand text-uppercase">Your profile</span>
+            <span class="navbar-brand text-uppercase">Your order</span>
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <form th:action="@{/logout}" method="post">
@@ -69,17 +69,29 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <table class="table table-striped">
+                    <table class="table table-striped" >
                         <thead class="table-dark">
                         <tr>
-
+                            <th>№ Order</th>
+                            <th>№ Car</th>
+                            <th>Date</th>
+                            <th>Email</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td></td>
-                        </tr>
+                        <form method="post" th:each="order: ${list}" th:action="@{|/order/${order.carOrderId}|}">
+
+                            <tr>
+                                <td th:text="${order.carOrderId}" />
+                                <td th:text="${order.carId}" />
+                                <td th:text="${order.date}" />
+                                <td th:text="${order.username}" />
+                                <td>
+                                    <input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" value="Cancel"/>
+                                </td>
+                            </tr>
+                        </form>
                         </tbody>
                     </table>
                 </div>

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Rent</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="../static/css/bootstrap.css"
@@ -11,7 +13,6 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <title>Car</title>
     <style type="text/css">
         #footer {
             position: fixed; /* Фиксированное положение */
@@ -21,8 +22,8 @@
         }
     </style>
 </head>
-<body>
 
+<body>
 <header>
     <nav class="navbar navbar-dark bg-dark navbar-expand-sm text-light p-1">
         <div class="container-fluid">
@@ -34,15 +35,15 @@
                 <ul class="navbar-nav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link " href="car_rent.html" th:href="@{/car_rent}">Car rent</a>
+                            <a class="nav-link active" href="car_rent.html" th:href="@{/car_rent}">Car rent</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="cars.html" th:href="@{/cars}">Cars</a>
+                        <li class="nav-item " sec:authorize="hasRole('ADMIN')">
+                            <a class="nav-link " href="cars.html" th:href="@{/cars}">Cars</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link" href="active_rentals.html" th:href="@{/active_rentals}">Active rentals</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link" href="users.html" th:href="@{/users}">Users</a>
                         </li>
                         <li class="nav-item" style="position: absolute; right: 0;">
@@ -58,18 +59,19 @@
 
         <ul class="navbar-nav float-lg-left">
             <li class="nav-item"
-                title="Back to list"><a href="cars.html"
-                                        th:href="@{/cars}"
+                title="Back to list"><a href="car_rent.html"
+                                        th:href="@{/car_rent}"
                                         class="btn btn-light btn-block"><i
                     class="bi-arrow-left"></i>Back to list</a></li>
         </ul>
     </nav>
     <nav>
         <div class="container-fluid">
-            <span class="navbar-brand text-uppercase">Create new car</span>
+            <span class="navbar-brand text-uppercase">Create new order</span>
         </div>
     </nav>
 </header>
+
 
 <section id="car">
     <div class="container-fluid">
@@ -77,31 +79,23 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <form id="carForm" method="post" th:each="el :${car}"  th:action="@{|/cars/${el.carId}/update|}">
+                        <form id="carOrder" th:action="@{|/car_rent/${el.carId}/order|}" method="post" th:each="el :${car}">
                             <div class="mb-3">
                                 <label class="form-control-label"></label>
-                                <input type="text" th:value="${el.carModel}" name="carModel" placeholder="Car model" class="form-control"/>
+                                <input type="date" name="dateLeased" placeholder="" class="form-control"/>
                             </div>
                             <div class="mb-3">
                                 <label class="form-control-label"></label>
-                                <input type="text" th:value="${el.yearOfIssue}" name="yearOfIssue" placeholder="Year of issue" class="form-control"/>
+                                <input hidden type="text" th:value="${#httpServletRequest.remoteUser}"  name="username" placeholder="Email" class="form-control"/>
                             </div>
                             <div class="mb-3">
-                                <label class="form-control-label"></label>
-                                <input type="text" th:value="${el.carColor}" name="carColor" placeholder="Car color" class="form-control"/>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-control-label"></label>
-                                <input type="text" th:value="${el.pricePerDay}" name="pricePerDay" placeholder="Price per day" class="form-control"/>
-                            </div>
-                            <div class="mb-3">
-                                <a href="cars.html"
-                                   th:href="@{/cars}"
+                                <a href="car_rent.html.html"
+                                   th:href="@{/car_rent}"
                                    class="btn btn-danger"
                                    title="Cancel"
                                    data-toggle="tooltip"
                                    data-placement="top">Cancel</a>
-                                <input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" value="Update"/>
+                                <input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" value="Rent"/>
                             </div>
                         </form>
                     </div>
@@ -110,18 +104,6 @@
         </div>
     </div>
 </section>
-
-<footer>
-    <div id="footer">
-        <hr/>
-        <p class="text-center"> &copy;Created by Ivan Aleinikau 2021</p>
-    </div>
-</footer>
-
-<script src="../static/js/bootstrap.bundle.min.js"
-        th:src="@{/js/bootstrap.bundle.min.js}"></script>
-<script src="../static/js/jquery-3.4.1.slim.min.js"
-        th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
 
 </body>
 </html>
